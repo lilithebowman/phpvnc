@@ -299,10 +299,16 @@ class vncClient {
 			return false;
 		}
 		debug('Got auth challenge');
-		// send auth pass
-		$iv = mcrypt_create_iv(mcrypt_get_iv_size (MCRYPT_DES, MCRYPT_MODE_ECB), MCRYPT_RAND);
-		//echo "CHALLENGE!!\n";
-		$crypted = mcrypt_encrypt(MCRYPT_DES, $this->mirrorBits($passwd), $data, MCRYPT_MODE_ECB, $iv);
+		
+		// Use openssl instead of deprecated mcrypt
+		$key = $this->mirrorBits($passwd);
+		$crypted = openssl_encrypt(
+			$data,
+			'DES-ECB',
+			$key,
+			OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING
+		);
+		
 		$this->dwrite($this->fp, $crypted);
 		
 		// auth result
@@ -447,7 +453,7 @@ class vncClient {
 			debug(__FUNCTION__ . '(); total rectangles: ' . $data['count']);
 
 		for ($rects=0; $rects < $data['count']; $rects++) {
-			//Obtener la informaci—n rect‡ngulo
+			//Obtener la informaciï¿½n rectï¿½ngulo
 			$r = $this->dread($this->fp, 12);
 			if ($r === false) return false;
 			if (strlen($r) == 0) {

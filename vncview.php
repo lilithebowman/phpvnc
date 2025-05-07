@@ -7,7 +7,7 @@ $passwd = $_SESSION['passwd'];
 $socket = $_SESSION['socket'];
 $sesid = $_COOKIE['PHPSESSID'];
 
-?>
+?><!DOCTYPE html>
 <html>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 <script src="js/keymap/kbmap.js"></script>
