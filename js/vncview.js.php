@@ -278,16 +278,22 @@ function setupEventSource() {
   });
 
   es.addEventListener("error", function(e) {
-	var obj = JSON.parse(e.data);
-	if (obj.error == 'errauth') {
-	  es.close();
-	  connected = 0;
-	}
-	if (obj.error == 'disconnected') {
-	  reconnect();
-	  return;
-	}
-	alert("Error: " + obj.errstr);
+    try {
+        var obj = JSON.parse(e.data);
+        if (obj.error == 'errauth') {
+            es.close();
+            connected = 0;
+        }
+        if (obj.error == 'disconnected') {
+            reconnect();
+            return;
+        }
+        alert("Error: " + obj.errstr);
+    } catch (err) {
+        console.error("JSON Parse error:", err);
+        console.log("Raw data received:", e.data);
+        alert("Connection error occurred");
+    }
   });
 }
 

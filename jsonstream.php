@@ -43,8 +43,8 @@ if ($auth === false) {
     $imgObj->errstr = $client->errstr;
     $imgObj->errno = $client->errno;
     
-    json_encode($imgObj);
-    echo "\n\n";
+    echo "event: error\n";
+    echo "data: " . json_encode($imgObj) . "\n\n";
     die();
 }
 
